@@ -2,6 +2,7 @@ package com.example.Blogify.services.Imp;
 
 import com.example.Blogify.entities.User;
 import com.example.Blogify.exceptions.ResourceNotFoundException;
+import com.example.Blogify.payloads.ProfileDto;
 import com.example.Blogify.payloads.UserDto;
 import com.example.Blogify.repositories.UserRepo;
 import com.example.Blogify.services.UserService;
@@ -34,12 +35,8 @@ public class UserServiceImp implements UserService {
     public UserDto updateUser(UserDto userDto, Integer userId) {
 
         User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
-
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        user.setAbout(userDto.getAbout());
-
+        user.setEmail(userDto.getEmail() != null ? userDto.getEmail() : user.getEmail());
+        user.setPassword(userDto.getPassword() != null ? userDto.getPassword() : user.getPassword());
         User updatedUser = userRepo.save(user);
 
         return userToDto(updatedUser);
@@ -71,11 +68,15 @@ public class UserServiceImp implements UserService {
 
     private User dtoToUser(UserDto userDto) {
 
-       return modelMapper.map(userDto,User.class);
+        return modelMapper.map(userDto, User.class);
     }
 
     private UserDto userToDto(User user) {
 
-        return modelMapper.map(user,UserDto.class);
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+        if (user.getProfile() != null)
+            userDto.setProfile(modelMapper.map(user.getProfile(), ProfileDto.class));
+
+        return userDto;
     }
 }

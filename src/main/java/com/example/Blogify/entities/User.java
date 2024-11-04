@@ -1,22 +1,34 @@
 package com.example.Blogify.entities;
 
+import com.example.Blogify.constant.DbConstant;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users")
 @NoArgsConstructor
 @Getter
 @Setter
-public class User {
+@AllArgsConstructor
+@Table(name = DbConstant.DbUser.TABLE_NAME)
+public class User extends  Audit{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private String name;
+
+    @Column(name= DbConstant.DbUser.EMAIL )
     private String email;
+
+    @Column(name=DbConstant.DbUser.PASSWORD)
     private String password;
-    private String about;
+
+    @Column(name=DbConstant.DbUser.ROLE)
+    private String role;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="user_profile")
+   // @JsonManagedReference
+    private Profile profile;
+
 }
