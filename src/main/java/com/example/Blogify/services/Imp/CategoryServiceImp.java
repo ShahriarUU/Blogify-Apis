@@ -50,16 +50,32 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public CategoryDto getCategory(Integer categoryId) {
-        return null;
+        Category category= categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","id",categoryId));
+        return modelMapper.map(category,CategoryDto.class);
     }
 
     @Override
     public void deleteCategory(Integer categoryId) {
+        Category category= categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","id",categoryId));
+        categoryRepo.delete(category);
 
     }
 
     @Override
     public List<CategoryDto> getAllCategory() {
-        return List.of();
+
+//       List<Category> categories=categoryRepo.findAll();
+//
+//       categories.stream().map(this::)
+return List.of();
     }
+
+//    private CategoryDto categoryToDto(Category category)
+//    {
+//        CategoryDto categoryDto=modelMapper.map(category,CategoryDto.class);
+//        if(category.getBlogPosts()!=null)
+//        {
+//            categoryDto.getBlogPosts(modelMapper.map())
+//        }
+//    }
 }
