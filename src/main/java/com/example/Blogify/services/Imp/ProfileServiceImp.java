@@ -10,6 +10,7 @@ import com.example.Blogify.services.ProfileService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProfileServiceImp implements ProfileService {
@@ -23,6 +24,7 @@ public class ProfileServiceImp implements ProfileService {
     @Autowired
     private UserRepo userRepo;
 
+    @Transactional
     @Override
     public ProfileDto createUserProfile(ProfileDto profileDto, Integer userId) {
 
@@ -39,6 +41,7 @@ public class ProfileServiceImp implements ProfileService {
 
     }
 
+    @Transactional
     @Override
     public ProfileDto updateProfile(ProfileDto profileDto, Integer profileId) {
 

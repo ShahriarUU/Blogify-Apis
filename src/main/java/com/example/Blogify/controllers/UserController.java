@@ -3,9 +3,12 @@ package com.example.Blogify.controllers;
 import com.example.Blogify.payloads.UserDto;
 import com.example.Blogify.services.UserService;
 import com.example.Blogify.utils.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,14 +21,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Transactional
     @PostMapping("/")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         UserDto createUserDto = userService.createUser(userDto);
         return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);
     }
 
+    @Transactional
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable Integer userId) {
+    public ResponseEntity<UserDto> updateUser( @RequestBody UserDto userDto, @PathVariable Integer userId) {
 
         UserDto updateUserDto = userService.updateUser(userDto, userId);
         return new ResponseEntity<>(updateUserDto, HttpStatus.OK);
@@ -43,6 +48,7 @@ public class UserController {
         return new ResponseEntity<>(allUser, HttpStatus.OK);
     }
 
+    @Transactional
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable Integer userId) {
         userService.deleteUser(userId);

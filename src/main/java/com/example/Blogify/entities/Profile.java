@@ -17,30 +17,30 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name= DbConstant.DbUserProfile.TABLE_NAME)
+@Table(name = DbConstant.DbUserProfile.TABLE_NAME)
 public class Profile extends Audit {
 
-    @Column(name=DbConstant.DbUserProfile.NAME)
+    @Column(name = DbConstant.DbUserProfile.NAME,nullable = false,length = 100)
     private String name;
 
 
-    @Column(name=DbConstant.DbUserProfile.ADDRESS)
+    @Column(name = DbConstant.DbUserProfile.ADDRESS,nullable = false,length = 100)
     private String address;
 
-    @Column(name=DbConstant.DbUserProfile.PHONE_NUMBER)
+    @Column(name = DbConstant.DbUserProfile.PHONE_NUMBER,unique = true)
     private String phoneNumber;
 
-    @Column(name=DbConstant.DbUserProfile.PROFESSION)
+    @Column(name = DbConstant.DbUserProfile.PROFESSION,nullable = false)
     private String profession;
 
-    @Column(name=DbConstant.DbUserProfile.ABOUT)
+    @Column(name = DbConstant.DbUserProfile.ABOUT,nullable = false)
     private String about;
 
-    @Column(name=DbConstant.DbUserProfile.IMAGE)
+    @Column(name = DbConstant.DbUserProfile.IMAGE)
     private String image;
 
     @OneToOne(mappedBy = "profile")
-  //  @JsonBackReference
+    //  @JsonBackReference
     private User user;
 
 }
