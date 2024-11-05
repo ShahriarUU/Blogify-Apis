@@ -29,7 +29,7 @@ public class DbConstant {
     }
 
     public static class DbUserProfile extends DbCommon {
-        public static final String USER_PROFILE="user_profile";
+        public static final String TABLE_NAME="user_profile";
         public static final String NAME = "name";
         public static final String IMAGE = "image";
         public static final String ADDRESS = "address";
@@ -38,5 +38,7 @@ public class DbConstant {
         public static final String STATUS = "status";
         public static final String ABOUT="about";
     }
+
+
 
 }

@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name= DbConstant.DbUserProfile.USER_PROFILE)
+@Table(name= DbConstant.DbUserProfile.TABLE_NAME)
 public class Profile extends Audit {
 
     @Column(name=DbConstant.DbUserProfile.NAME)
