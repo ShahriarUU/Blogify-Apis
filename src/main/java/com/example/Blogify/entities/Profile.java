@@ -3,14 +3,14 @@ package com.example.Blogify.entities;
 import com.example.Blogify.constant.DbConstant;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -42,5 +42,8 @@ public class Profile extends Audit {
     @OneToOne(mappedBy = "profile")
     //  @JsonBackReference
     private User user;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<BlogPost> blogPosts = new ArrayList<>();
 
 }

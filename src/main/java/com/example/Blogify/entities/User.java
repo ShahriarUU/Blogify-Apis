@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,12 +34,8 @@ public class User extends Audit {
     // @JsonManagedReference
     private Profile profile;
 
-
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private List<BlogPost> blogPosts;
-
     @OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    private List<Comment> comments=new ArrayList<>();
 
 
 }

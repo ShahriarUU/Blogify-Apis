@@ -16,6 +16,5 @@ public class CategoryDto extends Audit {
 
     @NotEmpty(message = "blog category must be mandatory")
     private String categoryName;
-
     private List<BlogPostDto> blogPosts;
 }

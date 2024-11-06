@@ -16,14 +16,14 @@ public class ProfileController {
     private ProfileService profileService;
 
     @PostMapping("/{userId}")
-    public ResponseEntity<ProfileDto> createProfile(@RequestBody ProfileDto profile, @PathVariable Integer userId) {
+    public ResponseEntity<ProfileDto> createProfile(@RequestBody ProfileDto profile, @PathVariable Long userId) {
         ProfileDto createProfile = profileService.createUserProfile(profile, userId);
 
         return new ResponseEntity<>(createProfile, HttpStatus.CREATED);
     }
 
     @PutMapping("/{profileId}")
-    public ResponseEntity<ProfileDto> updateProfile(@RequestBody ProfileDto profile, @PathVariable Integer profileId) {
+    public ResponseEntity<ProfileDto> updateProfile(@RequestBody ProfileDto profile, @PathVariable Long profileId) {
         ProfileDto updateProfile = profileService.updateProfile(profile, profileId);
 
         return new ResponseEntity<>(updateProfile, HttpStatus.OK);

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,10 +27,10 @@ public class BlogPost extends Audit {
     @JoinColumn(name="category_id")
     private Category category;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
-    @JoinColumn(name="user_id")
-    private User user;
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.LAZY)
+    @JoinColumn(name="profile_id")
+    private Profile profile;
 
     @OneToMany(mappedBy = "blogPost",cascade = CascadeType.ALL)
-    private List<Comment> comment;
+    private List<Comment> comment=new ArrayList<>();
 }

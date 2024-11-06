@@ -1,19 +1,15 @@
-package com.example.Blogify.payloads;
+package com.example.Blogify.payloads.ResponseDto;
 
 import com.example.Blogify.entities.Audit;
-import com.example.Blogify.payloads.ResponseDto.BlogPostCategoryDto;
-import com.example.Blogify.payloads.ResponseDto.BlogPostCommentDto;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-@NoArgsConstructor
 @Getter
 @Setter
-public class BlogPostDto extends Audit {
-
+@NoArgsConstructor
+public class BlogWriteByUserDto extends Audit {
     @NotEmpty(message = "blog title must be mandatory")
     private String title;
 
@@ -21,11 +17,7 @@ public class BlogPostDto extends Audit {
 
     @NotEmpty(message = "blog Content must be mandatory")
     private String content;
-
     private BlogPostCategoryDto category;
-
-    private ProfileDto profile;
-
     private BlogPostCommentDto comment;
 
 }

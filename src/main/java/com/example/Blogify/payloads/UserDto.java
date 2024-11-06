@@ -17,8 +17,6 @@ import java.util.List;
 @Setter
 public class UserDto extends Audit {
 
-    private long id;
-
     @NotEmpty
     @Email(message = "email field must be mandatory")
     private String email;
@@ -29,7 +27,4 @@ public class UserDto extends Audit {
     @NotNull(message = "user role must be mandatory")
     private String role;
     private ProfileDto profile;
-    private List<BlogPostDto> blogPosts;
-    private List<CommentDto> comments;
-
 }

@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class ProfileDto extends Audit {
+public class ProfileDto{
 
     @NotEmpty(message = "User name must be mandatory")
     @Max(50)

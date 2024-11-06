@@ -26,7 +26,7 @@ public class ProfileServiceImp implements ProfileService {
 
     @Transactional
     @Override
-    public ProfileDto createUserProfile(ProfileDto profileDto, Integer userId) {
+    public ProfileDto createUserProfile(ProfileDto profileDto, Long userId) {
 
         Profile userProfile = modelMapper.map(profileDto, Profile.class);
 
@@ -43,7 +43,7 @@ public class ProfileServiceImp implements ProfileService {
 
     @Transactional
     @Override
-    public ProfileDto updateProfile(ProfileDto profileDto, Integer profileId) {
+    public ProfileDto updateProfile(ProfileDto profileDto, Long profileId) {
 
         Profile profile = profileRepo.findById(profileId).orElseThrow(() -> new ResourceNotFoundException("Profile", "Id", profileId));
 
