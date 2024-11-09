@@ -2,37 +2,42 @@ package com.example.Blogify.controllers;
 
 import com.example.Blogify.payloads.BlogPostDto;
 import com.example.Blogify.payloads.UserDto;
+import com.example.Blogify.services.BlogPostService;
 import com.example.Blogify.services.UserService;
 import com.example.Blogify.utils.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-
     @PostMapping("/")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
-        UserDto createUserDto = userService.createUser(userDto);
+        UserDto createUserDto = userService.registerUser(userDto);
         return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/admin")
+    public ResponseEntity<UserDto> createAdmin(@Valid @RequestBody UserDto userDto)
+    {
+        UserDto createAdminDto=userService.registerAdmin(userDto);
+        return new ResponseEntity<>(createAdminDto, HttpStatus.CREATED);
+
     }
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserDto> updateUser( @RequestBody UserDto userDto, @PathVariable Long userId) {
 
-        UserDto updateUserDto = userService.updateUser(userDto, userId);
+        UserDto updateUserDto = userService.updateUserInfo(userDto, userId);
         return new ResponseEntity<>(updateUserDto, HttpStatus.OK);
     }
 
@@ -55,11 +60,8 @@ public class UserController {
         return new ResponseEntity<>(new ApiResponse("User delete successfully", true), HttpStatus.OK);
     }
 
-    @GetMapping("/all-blog-posts/{userId}")
-    public ResponseEntity<List<BlogPostDto>> getAllBlogPosts(@PathVariable Long userId)
-    {
-       List<BlogPostDto> allPosts= userService.getAllPostWriteByUser(userId);
-       return  new ResponseEntity<>(allPosts,HttpStatus.OK);
-    }
+
+
+
 }
 

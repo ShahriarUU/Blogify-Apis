@@ -6,10 +6,12 @@ import java.util.List;
 
 public interface BlogPostService {
 
-    BlogPostDto createPost(BlogPostDto blogPostDto,Long userId,Long CategoryId);
-    BlogPostDto getPost(Long postId);
-    BlogPostDto updatePost(BlogPostDto blogPostDto,Long postId);
-    List<BlogPostDto> getAllPost();
-    void deletePost(Long postId);
+    BlogPostDto createPostByUser(BlogPostDto blogPostDto,Long userId,Long CategoryId);
+    BlogPostDto getPostByUser(Long postId);
+    BlogPostDto updatePostByUser(BlogPostDto blogPostDto,Long postId);
+    List<BlogPostDto> getAllBlogPost();
+    List<BlogPostDto> getAllPostWrittenByUser(Long userId);
+    List<BlogPostDto>getAllPostByCategory(Long categoryId);
+    void deletePostByUser(Long postId);
 
 }

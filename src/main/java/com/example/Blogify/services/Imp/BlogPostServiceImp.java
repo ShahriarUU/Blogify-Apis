@@ -2,9 +2,11 @@ package com.example.Blogify.services.Imp;
 
 import com.example.Blogify.entities.BlogPost;
 import com.example.Blogify.entities.Category;
+import com.example.Blogify.entities.Comment;
 import com.example.Blogify.entities.User;
 import com.example.Blogify.exceptions.ResourceNotFoundException;
 import com.example.Blogify.payloads.BlogPostDto;
+import com.example.Blogify.payloads.CommentDto;
 import com.example.Blogify.payloads.ProfileDto;
 import com.example.Blogify.payloads.UserDto;
 import com.example.Blogify.repositories.BlogPostRepo;
@@ -37,25 +39,28 @@ public class BlogPostServiceImp implements BlogPostService {
 
     @Transactional
     @Override
-    public BlogPostDto createPost(BlogPostDto blogPostDto,Long userId, Long categoryId) {
+    public BlogPostDto createPostByUser(BlogPostDto blogPostDto,Long userId, Long categoryId) {
         BlogPost blogPost = dtoToPost(blogPostDto);
         User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
         Category category = categoryRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
-        blogPost.setProfile(user.getProfile());
+        blogPost.setUser(user);
         blogPost.setCategory(category);
         BlogPost createBlog=blogPostRepo.save(blogPost);
         return postToDto(createBlog);
     }
 
+
+
     @Override
-    public BlogPostDto getPost(Long postId) {
+    public BlogPostDto getPostByUser(Long postId) {
         BlogPost blogPost = blogPostRepo.findById(postId).orElseThrow(() -> new ResourceNotFoundException("post", "id", postId));
         return postToDto(blogPost);
     }
 
     @Transactional
     @Override
-    public BlogPostDto updatePost(BlogPostDto blogPostDto, Long postId) {
+    public BlogPostDto updatePostByUser(BlogPostDto blogPostDto, Long postId) {
+
         BlogPost blogPost = blogPostRepo.findById(postId).orElseThrow(() -> new ResourceNotFoundException("post", "Id", postId));
         blogPost.setTitle(blogPostDto.getTitle() != null ? blogPostDto.getTitle() : blogPost.getTitle());
         blogPost.setImage(blogPostDto.getImage() != null ? blogPostDto.getImage() : blogPost.getImage());
@@ -66,31 +71,49 @@ public class BlogPostServiceImp implements BlogPostService {
     }
 
     @Override
-    public List<BlogPostDto> getAllPost() {
-
+    public List<BlogPostDto> getAllBlogPost() {
         return blogPostRepo.findAll().stream().map(this::postToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BlogPostDto> getAllPostWrittenByUser(Long userId) {
+
+      User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","id",userId));
+      return blogPostRepo.findByUser(user).stream().map(this::postToDto).collect(Collectors.toList());
 
     }
 
+    @Override
+    public List<BlogPostDto> getAllPostByCategory(Long categoryId) {
+        Category category=categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","id",categoryId));
+
+        return blogPostRepo.findByCategory(category).stream().map(this::postToDto).collect(Collectors.toList());
+    }
+
+
     @Transactional
     @Override
-    public void deletePost(Long postId) {
+    public void deletePostByUser(Long postId) {
         BlogPost blogPost = blogPostRepo.findById(postId).orElseThrow(() -> new ResourceNotFoundException("post", "id", postId));
         blogPostRepo.delete(blogPost);
     }
 
 
-    public BlogPostDto postToDto(BlogPost blogPost) {
+    private  BlogPostDto postToDto(BlogPost blogPost) {
 
         BlogPostDto blogPostDto = modelMapper.map(blogPost, BlogPostDto.class);
-        if (blogPostDto.getProfile() != null)
-            blogPostDto.setProfile(modelMapper.map(blogPost.getProfile(), ProfileDto.class));
-
-        return blogPostDto;
+        if (blogPostDto.getUser() != null || blogPostDto.getComment() != null) {
+            blogPostDto.setUser(modelMapper.map(blogPost.getUser(), UserDto.class));
+           List<CommentDto> commentDto= blogPost.getComment().stream().map((comment)->modelMapper.map(comment,CommentDto.class)).collect(Collectors.toList());
+           blogPostDto.setComment(commentDto);
+           return blogPostDto;
+        }
+        return modelMapper.map(blogPost,BlogPostDto.class);
     }
 
     private BlogPost dtoToPost(BlogPostDto blogPostDto) {
-        return modelMapper.map(blogPostDto, BlogPost.class);
+        return modelMapper.map(blogPostDto,BlogPost.class);
     }
 
-}
+
+    }

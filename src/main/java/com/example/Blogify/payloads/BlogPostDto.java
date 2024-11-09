@@ -1,12 +1,13 @@
 package com.example.Blogify.payloads;
 
 import com.example.Blogify.entities.Audit;
-import com.example.Blogify.payloads.ResponseDto.BlogPostCategoryDto;
-import com.example.Blogify.payloads.ResponseDto.BlogPostCommentDto;
+import com.example.Blogify.entities.Comment;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -22,10 +23,10 @@ public class BlogPostDto extends Audit {
     @NotEmpty(message = "blog Content must be mandatory")
     private String content;
 
-    private BlogPostCategoryDto category;
+    private CategoryDto category;
 
-    private ProfileDto profile;
+    private UserDto user;
 
-    private BlogPostCommentDto comment;
+    private List<CommentDto> comment;
 
 }

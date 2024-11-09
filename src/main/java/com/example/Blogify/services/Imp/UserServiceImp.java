@@ -1,7 +1,7 @@
 package com.example.Blogify.services.Imp;
 
-import com.example.Blogify.entities.BlogPost;
-import com.example.Blogify.entities.Profile;
+
+import com.example.Blogify.entities.Enums.UserRole;
 import com.example.Blogify.entities.User;
 import com.example.Blogify.exceptions.ResourceNotFoundException;
 import com.example.Blogify.payloads.BlogPostDto;
@@ -13,9 +13,12 @@ import com.example.Blogify.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.example.Blogify.entities.Enums.UserRole.USER;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -31,16 +34,29 @@ public class UserServiceImp implements UserService {
     @Autowired
     private BlogPostServiceImp blogPostServiceImp;
 
+
+    @Transactional
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public UserDto registerUser(UserDto userDto) {
 
         User user = dtoToUser(userDto);
+        user.setRole(UserRole.USER);
         User savedUser = userRepo.save(user);
         return userToDto(savedUser);
     }
 
+    @Transactional
     @Override
-    public UserDto updateUser(UserDto userDto, Long userId) {
+    public UserDto registerAdmin(UserDto userDto) {
+        User user = dtoToUser(userDto);
+        user.setRole(UserRole.ADMIN);
+        User savedUser = userRepo.save(user);
+        return userToDto(savedUser);
+    }
+
+    @Transactional
+    @Override
+    public UserDto updateUserInfo(UserDto userDto, Long userId) {
 
         User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
         user.setEmail(userDto.getEmail() != null ? userDto.getEmail() : user.getEmail());
@@ -66,6 +82,7 @@ public class UserServiceImp implements UserService {
         return users.stream().map(this::userToDto).collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public void deleteUser(Long userId) {
 
@@ -74,13 +91,7 @@ public class UserServiceImp implements UserService {
         userRepo.delete(user);
     }
 
-    @Override
-    public List<BlogPostDto> getAllPostWriteByUser(Long userId) {
-        User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
-        Long profileId = user.getProfile().getId();
-        return blogPostRepo.findByProfileId(profileId).stream().map((post) -> blogPostServiceImp.postToDto(post)).collect(Collectors.toList());
 
-    }
 
 
     private User dtoToUser(UserDto userDto) {

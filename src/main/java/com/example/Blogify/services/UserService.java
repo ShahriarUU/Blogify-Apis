@@ -1,16 +1,17 @@
 package com.example.Blogify.services;
 
-import com.example.Blogify.entities.BlogPost;
-import com.example.Blogify.payloads.BlogPostDto;
+
 import com.example.Blogify.payloads.UserDto;
 
 import java.util.List;
 
 public interface UserService {
 
-    UserDto createUser(UserDto user);
+    UserDto registerUser(UserDto user);
 
-    UserDto updateUser(UserDto user, Long userId);
+    UserDto registerAdmin(UserDto userDto);
+
+    UserDto updateUserInfo(UserDto user, Long userId);
 
     UserDto getUserById(Long userId);
 
@@ -18,5 +19,4 @@ public interface UserService {
 
     void deleteUser(Long userId);
 
-    List<BlogPostDto> getAllPostWriteByUser(Long userId);
 }

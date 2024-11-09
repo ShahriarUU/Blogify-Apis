@@ -39,11 +39,10 @@ public class Profile extends Audit {
     @Column(name = DbConstant.DbUserProfile.IMAGE)
     private String image;
 
-    @OneToOne(mappedBy = "profile")
+    @OneToOne(mappedBy = "profile",fetch = FetchType.LAZY)
     //  @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<BlogPost> blogPosts = new ArrayList<>();
+
 
 }

@@ -1,9 +1,7 @@
 package com.example.Blogify.payloads;
 
-import com.example.Blogify.entities.Audit;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +17,7 @@ public class ProfileDto{
     private String image;
     @NotEmpty(message = "The address field must be mandatory")
     private String address;
+
     private String phoneNumber;
     @NotEmpty(message = "The profession field must be mandatory")
     private String profession;

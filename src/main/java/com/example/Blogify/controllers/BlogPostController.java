@@ -4,8 +4,6 @@ package com.example.Blogify.controllers;
 import com.example.Blogify.payloads.BlogPostDto;
 import com.example.Blogify.services.BlogPostService;
 import com.example.Blogify.utils.ApiResponse;
-import lombok.Generated;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,16 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/user/post")
+@RequestMapping("/api/v1/post")
 public class BlogPostController {
 
     @Autowired
     private BlogPostService blogPostService;
 
-    @PostMapping("/{userId}/{categoryId}")
+    @PostMapping("/user/{userId}/category/{categoryId}")
     public ResponseEntity<BlogPostDto> createPost(@RequestBody BlogPostDto blogPostDto,@PathVariable Long userId,@PathVariable Long categoryId)
     {
-      BlogPostDto createPost= blogPostService.createPost(blogPostDto,userId,categoryId);
+      BlogPostDto createPost= blogPostService.createPostByUser(blogPostDto,userId,categoryId);
 
       return new ResponseEntity<>(createPost, HttpStatus.CREATED);
     }
@@ -31,7 +29,7 @@ public class BlogPostController {
     @PutMapping("/{postId}")
     public ResponseEntity<BlogPostDto> updatePost(@RequestBody BlogPostDto blogPostDto,@PathVariable Long postId)
     {
-        BlogPostDto updatedPost=blogPostService.updatePost(blogPostDto,postId);
+        BlogPostDto updatedPost=blogPostService.updatePostByUser(blogPostDto,postId);
 
         return new ResponseEntity<>(updatedPost,HttpStatus.OK);
     }
@@ -39,22 +37,38 @@ public class BlogPostController {
     @GetMapping("/{postId}")
     public ResponseEntity<BlogPostDto>getPost(@PathVariable Long postId)
     {
-        BlogPostDto blogPost=blogPostService.getPost(postId);
+        BlogPostDto blogPost=blogPostService.getPostByUser(postId);
         return new ResponseEntity<>(blogPost,HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<?>deletePost(@PathVariable Long postId)
+    {
+        blogPostService.deletePostByUser(postId);
+        return new ResponseEntity<>(new ApiResponse("Blog post delete successfully", true), HttpStatus.OK);
+
     }
 
     @GetMapping("/")
     public ResponseEntity<List<BlogPostDto>> getAllBlogPost()
     {
-        List<BlogPostDto> blogPostList=blogPostService.getAllPost();
-        return new ResponseEntity<>(blogPostList,HttpStatus.OK);
-    }
-    @DeleteMapping("/{postId}")
-    public ResponseEntity<?>deletePost(@PathVariable Long postId)
-    {
-        blogPostService.deletePost(postId);
-        return new ResponseEntity<>(new ApiResponse("post delete successfully", true), HttpStatus.OK);
+         List<BlogPostDto> allBlogPost = blogPostService.getAllBlogPost();
+         return new ResponseEntity<>(allBlogPost,HttpStatus.OK);
 
+    }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<BlogPostDto>> getAllBlogPostWrittenByUser(@PathVariable Long userId)
+    {
+        List<BlogPostDto> blogPostByUser = blogPostService.getAllPostWrittenByUser(userId);
+        return new ResponseEntity<>(blogPostByUser,HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public  ResponseEntity<List<BlogPostDto>> getAllBlogPost(@PathVariable Long categoryId)
+    {
+        List<BlogPostDto> blogPostByCategory=blogPostService.getAllPostByCategory(categoryId);
+        return new ResponseEntity<>(blogPostByCategory,HttpStatus.OK);
     }
 
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImp implements CategoryService {
@@ -44,13 +45,13 @@ public class CategoryServiceImp implements CategoryService {
 
     }
 
-
     @Override
-    public CategoryDto getCategory(Long categoryId) {
-        Category category = categoryRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
-        return modelMapper.map(category, CategoryDto.class);
+    public List<CategoryDto> getAllCategories() {
+       List<Category> categories = categoryRepo.findAll();
+      return categories.stream().map((category -> modelMapper.map(category, CategoryDto.class))).collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public void deleteCategory(Long categoryId) {
         Category category = categoryRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));

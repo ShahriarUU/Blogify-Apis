@@ -20,17 +20,17 @@ public class BlogPost extends Audit {
     private String title;
     @Column(name = DbConstant.DbBlogPost.IMAGE)
     private String image;
-    @Column(name = DbConstant.DbBlogPost.CONTENT,nullable = false)
+    @Column(name = DbConstant.DbBlogPost.CONTENT,nullable = false,length = 1500)
     private String content;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
     private Category category;
 
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.LAZY)
-    @JoinColumn(name="profile_id")
-    private Profile profile;
+    @JoinColumn(name="user_id")
+    private User user;
 
-    @OneToMany(mappedBy = "blogPost",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "blogPost",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Comment> comment=new ArrayList<>();
 }

@@ -1,7 +1,6 @@
 package com.example.Blogify.controllers;
 
 import com.example.Blogify.payloads.ProfileDto;
-import com.example.Blogify.services.Imp.ProfileServiceImp;
 import com.example.Blogify.services.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,14 +16,14 @@ public class ProfileController {
 
     @PostMapping("/{userId}")
     public ResponseEntity<ProfileDto> createProfile(@RequestBody ProfileDto profile, @PathVariable Long userId) {
-        ProfileDto createProfile = profileService.createUserProfile(profile, userId);
+        ProfileDto createProfile = profileService.createProfileByUser(profile, userId);
 
         return new ResponseEntity<>(createProfile, HttpStatus.CREATED);
     }
 
     @PutMapping("/{profileId}")
     public ResponseEntity<ProfileDto> updateProfile(@RequestBody ProfileDto profile, @PathVariable Long profileId) {
-        ProfileDto updateProfile = profileService.updateProfile(profile, profileId);
+        ProfileDto updateProfile = profileService.updateProfileByUser(profile, profileId);
 
         return new ResponseEntity<>(updateProfile, HttpStatus.OK);
     }
