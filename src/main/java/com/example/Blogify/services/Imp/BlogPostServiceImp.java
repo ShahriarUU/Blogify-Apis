@@ -102,7 +102,7 @@ public class BlogPostServiceImp implements BlogPostService {
     private  BlogPostDto postToDto(BlogPost blogPost) {
 
         BlogPostDto blogPostDto = modelMapper.map(blogPost, BlogPostDto.class);
-        if (blogPostDto.getUser() != null || blogPostDto.getComment() != null) {
+        if (blogPostDto.getUser() != null && blogPostDto.getComment() != null) {
             blogPostDto.setUser(modelMapper.map(blogPost.getUser(), UserDto.class));
            List<CommentDto> commentDto= blogPost.getComment().stream().map((comment)->modelMapper.map(comment,CommentDto.class)).collect(Collectors.toList());
            blogPostDto.setComment(commentDto);

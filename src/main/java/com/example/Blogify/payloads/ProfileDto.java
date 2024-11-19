@@ -1,5 +1,6 @@
 package com.example.Blogify.payloads;
 
+import com.example.Blogify.entities.Audit;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class ProfileDto{
+public class ProfileDto extends Audit {
 
     @NotEmpty(message = "User name must be mandatory")
     @Max(50)
