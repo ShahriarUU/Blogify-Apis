@@ -70,5 +70,5 @@ public class BlogPostController {
         List<BlogPostDto> blogPostByCategory=blogPostService.getAllPostByCategory(categoryId);
         return new ResponseEntity<>(blogPostByCategory,HttpStatus.OK);
     }
-
+//git learing 01add
 }
