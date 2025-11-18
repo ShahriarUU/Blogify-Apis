@@ -22,6 +22,7 @@ public class DbConstant {
         public static final String EMAIL = "email";
         public static final String PASSWORD = "password";
         public static final String ROLE = "user_role";
+        public static final String ROLE01 = "user_role";
 
         DbUser() {
 
